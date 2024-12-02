@@ -4,7 +4,7 @@ import java.util.*;
 
 public class AdventDay1 {
 
-    private static final File input = new File("resources/input");
+    private static final File input = new File("resources/input_1");
 
     public static int distance() throws FileNotFoundException {
         try (Scanner scanner = new Scanner(input)) {
