@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 public class AdventDay4 {
 
-    static int[][] directions = {
+    private static final File input = new File("resources/input_4");
+
+    static final int[][] directions = {
             {-1, 0},
             {-1, 1},
             {0, 1},
@@ -17,18 +19,11 @@ public class AdventDay4 {
             {-1, -1}
     };
 
-    static char[] xmas = { 'X', 'M', 'A', 'S' };
-
-
-    public static void main(String[] args) throws FileNotFoundException {
-        char[][] grid = readGrid("resources/input_4");
-        int result = countXMASPatterns_2(grid);
-        System.out.println("Number of X-MAS patterns: " + result);
-    }
+    static final char[] xmas = { 'X', 'M', 'A', 'S' };
 
     public static char[][] readGrid(String filename) throws FileNotFoundException {
         List<char[]> lines = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File(filename))) {
+        try (Scanner scanner = new Scanner(input)) {
             while (scanner.hasNextLine()) {
                 lines.add(scanner.nextLine().toCharArray());
             }
