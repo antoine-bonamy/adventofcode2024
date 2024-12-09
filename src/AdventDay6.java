@@ -2,6 +2,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+/**
+ * <a href="https://adventofcode.com/2024/day/6">Advent of Code day six</a>
+ */
 public class AdventDay6 {
 
     private static final String INPUT = "resources/input_6";
@@ -21,20 +24,11 @@ public class AdventDay6 {
 
     public static int part1() {
         char[][] grid = read();
-        int currentX = -1;
-        int currentY = -1;
+        int[] guardPosition = findGuard(grid);
+        int currentX = guardPosition[0];
+        int currentY = guardPosition[1];
         int currentDirection = 0;
-        // Find starting coord
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid[x].length; y++) {
-                if (grid[x][y] == GUARD) {
-                    currentX = x;
-                    currentY = y;
-                    break;
-                }
-            }
-            if (currentX != -1) break;
-        }
+
         // Estimate the guardian path
         int pathCount = 0;
         while (isInBounds(grid, currentX, currentY)) {
@@ -55,53 +49,69 @@ public class AdventDay6 {
         return pathCount;
     }
 
-    //TODO: OPTIMISATION !!!!!
+
     public static int part2() {
         char[][] originalGrid = read();
         int[] guardPosition = findGuard(originalGrid);
-        if (guardPosition == null) {
-            throw new IllegalStateException("Guard not found in the grid!");
-        }
-
         int startX = guardPosition[0];
         int startY = guardPosition[1];
         int loopCount = 0;
-
-        // Parcourir chaque position pour placer une obstruction potentielle
+        Set<List<Integer>> neighbours = getNeighbour(originalGrid, startX, startY);
         for (int x = 0; x < originalGrid.length; x++) {
             for (int y = 0; y < originalGrid[x].length; y++) {
-                // Ignorer les positions déjà occupées ou la position de départ
                 if (originalGrid[x][y] != '.' || (x == startX && y == startY)) {
                     continue;
                 }
-
-                // Simuler le comportement du garde avec une obstruction à (x, y)
-                char[][] grid = copyGrid(originalGrid);
-                grid[x][y] = OBSTACLE;
-
-                if (isGuardStuck(grid, startX, startY)) {
+                if (!neighbours.contains(Arrays.asList(x, y))) {
+                    continue;
+                }
+                originalGrid[x][y] = NEW_OBSTACLE;
+                if (isGuardStuck(originalGrid, startX, startY)) {
                     loopCount++;
                 }
+                originalGrid[x][y] = '.';
             }
         }
-
         return loopCount;
     }
 
+    private static Set<List<Integer>> getNeighbour(final char[][] grid, int startX, int startY) {
+        char[][] pathGrid = copyGrid(grid);
+        int currentX = startX;
+        int currentY = startY;
+        int currentDirection = 0;
+        Set<List<Integer>> neighbour = new HashSet<>();
+        while (isInBounds(pathGrid, currentX, currentY)) {
+            char cell = pathGrid[currentX][currentY];
+            if (cell == OBSTACLE) {
+                currentX -= directions[currentDirection][0];
+                currentY -= directions[currentDirection][1];
+                currentDirection = turnRight(currentDirection);
+            } else {
+                if (cell != PATH) {
+                    pathGrid[currentX][currentY] = PATH;
+                    for (int[] direction : directions) {
+                        neighbour.add(Arrays.asList(currentX + direction[0], currentY + direction[1]));
+                    }
+                }
+            }
+            currentX += directions[currentDirection][0];
+            currentY += directions[currentDirection][1];
+        }
+        return neighbour;
+    }
+
+    //TODO: Méthode mal optimisée, ou trop d'appel effectué. Utiliser algo du lièvre et de la tortue
     private static boolean isGuardStuck(char[][] grid, int startX, int startY) {
         int x = startX, y = startY, direction = 0;
-
-        // Utiliser un ensemble pour détecter les boucles
         Set<String> visited = new HashSet<>();
-
         while (isInBounds(grid, x, y)) {
             String state = x + "," + y + "," + direction;
             if (visited.contains(state)) {
-                return true; // Le garde est bloqué dans une boucle
+                return true;
             }
             visited.add(state);
-
-            if (grid[x][y] == OBSTACLE) {
+            if (grid[x][y] == OBSTACLE || grid[x][y] == NEW_OBSTACLE) {
                 x -= directions[direction][0];
                 y -= directions[direction][1];
                 direction = (direction + 1) % directions.length;
@@ -110,8 +120,7 @@ public class AdventDay6 {
                 y += directions[direction][1];
             }
         }
-
-        return false; // Le garde a quitté la grille sans être bloqué
+        return false;
     }
 
     private static int[] findGuard(char[][] grid) {
@@ -122,7 +131,7 @@ public class AdventDay6 {
                 }
             }
         }
-        return null; // Guard introuvable
+        throw new IllegalStateException("Le garde n'a pas été trouvé !");
     }
 
     private static char[][] copyGrid(char[][] grid) {

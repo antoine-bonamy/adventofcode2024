@@ -9,6 +9,9 @@ import java.util.stream.IntStream;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ * <a href="https://adventofcode.com/2024/day/5">Advent of Code day five</a>
+ */
 public class AdventDay5 {
 
     private static final String INPUT = "resources/input_5";

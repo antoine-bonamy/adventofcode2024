@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 
+/**
+ * <a href="https://adventofcode.com/2024/day/7">Advent of Code day seven</a>
+ */
 public class AdventDay7 {
 
     private static final String INPUT = "resources/input_7";

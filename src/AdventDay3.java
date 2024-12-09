@@ -4,6 +4,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * <a href="https://adventofcode.com/2024/day/3">Advent of Code day three</a>
+ */
 public class AdventDay3 {
 
     private static final File input = new File("resources/input_3");
@@ -12,7 +15,7 @@ public class AdventDay3 {
     private static final String MUL_INST = "mul";
 
 
-    public static int process_simple_instructions() throws FileNotFoundException {
+    public static int part1() throws FileNotFoundException {
         Pattern p = Pattern.compile("mul\\((\\d{1,3}),(\\d{1,3})\\)");
         try (Scanner scanner = new Scanner(input)) {
             int sum = 0;
@@ -23,10 +26,14 @@ public class AdventDay3 {
                 }
             }
             return sum;
+        } catch (FileNotFoundException e) {
+            System.err.println("Erreur : Fichier non trouvé. Assurez-vous que le fichier 'resources/input_7' existe " +
+                    "et est accessible.");
+            return -1;
         }
     }
 
-    public static int process_complex_instructions() throws FileNotFoundException {
+    public static int part2() throws FileNotFoundException {
         Pattern pattern = Pattern.compile("mul\\((\\d{1,3}),(\\d{1,3})\\)|do\\(\\)|don't\\(\\)");
         try (Scanner scanner = new Scanner(input)) {
             int sum = 0;
@@ -45,6 +52,10 @@ public class AdventDay3 {
                 }
             }
             return sum;
+        } catch (FileNotFoundException e) {
+            System.err.println("Erreur : Fichier non trouvé. Assurez-vous que le fichier 'resources/input_7' existe " +
+                    "et est accessible.");
+            return -1;
         }
     }
 

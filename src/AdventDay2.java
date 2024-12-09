@@ -2,11 +2,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * <a href="https://adventofcode.com/2024/day/2">Advent of Code day two</a>
+ */
 public class AdventDay2 {
 
     private static final File input = new File("resources/input_2");
 
-    public static int number_safe_reports(int tolerance) throws FileNotFoundException {
+    public static int part1And2(int tolerance) {
         try (Scanner scanner = new Scanner(input)) {
             int nbSafeReports = 0;
             while (scanner.hasNextLine()) {
@@ -16,6 +19,10 @@ public class AdventDay2 {
                 }
             }
             return nbSafeReports;
+        } catch (FileNotFoundException e) {
+            System.err.println("Erreur : Fichier non trouvé. Assurez-vous que le fichier 'resources/input_7' existe " +
+                    "et est accessible.");
+            return -1;
         }
     }
 
