@@ -8,22 +8,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static util.FileIO.readString;
+
+/**
+ * <a href="https://adventofcode.com/2024/day/9">Advent of Code day nine</a>
+ */
 public class AdventDay9 {
 
     private static final String INPUT_FILE = "resources/input_9";
-    private static final File input = new File(INPUT_FILE);
 
     private static final String POINT = ".";
 
     public static BigInteger part1() {
-        String[] disk = read().split("");
+        String[] disk = readString(INPUT_FILE).split("");
         List<String> filesystem = getFilesystem(disk);
         List<String> condensed = getCondensed(filesystem);
         return computeChecksum(condensed);
     }
 
     public static BigInteger part2() {
-        String[] disk = read().split("");
+        String[] disk = readString(INPUT_FILE).split("");
         Map<Integer, Integer> idSize = getIdSize(disk);
         List<String> filesystem = new ArrayList<>(getFilesystem(disk));
         List<String> sortedDisk = new ArrayList<>(filesystem);
@@ -111,28 +115,4 @@ public class AdventDay9 {
         return checksum;
     }
 
-    private static String read() {
-        try {
-            return Files.readString(Path.of(INPUT_FILE));
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading input file: " + INPUT_FILE, e);
-        }
-    }
-
 }
-
-//for (int k = 0, r = filesystem.size() - 1; r > 0 && k < filesystem.size(); k++) {
-//        if (filesystem.get(k).equals(POINT)) {
-//            sub.add(POINT);
-//            file.add(filesystem.get(r));
-//        } else {
-//            if (!sub.isEmpty() && sub.size() >= file.size()) {
-//                condensed.addAll(file);
-//                r -= sub.size();
-//                sub = new ArrayList<>();
-//                file = new ArrayList<>();
-//            }
-//            if (!condensed.contains(filesystem.get(k))) {
-//                condensed.add(filesystem.get(k));
-//            }
-//        }

@@ -11,8 +11,7 @@ import java.util.function.BiFunction;
  */
 public class AdventDay7 {
 
-    private static final String INPUT = "resources/input_7";
-    private static final File input = new File(INPUT);
+    private static final File input = new File("resources/input_7");
 
     private static final List<BiFunction<BigInteger, BigInteger, BigInteger>> operations = List.of(
             BigInteger::add,
@@ -39,7 +38,7 @@ public class AdventDay7 {
             }
             return sum;
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("File not found: " + INPUT, e);
+            throw new RuntimeException("File not found: " + input.getPath(), e);
         }
     }
 

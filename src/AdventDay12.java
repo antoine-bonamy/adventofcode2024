@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * <a href="https://adventofcode.com/2024/day/12">Advent of Code day twelve</a>
+ */
 public class AdventDay12 {
 
     private static final String INPUT_FILE = "resources/input_12";

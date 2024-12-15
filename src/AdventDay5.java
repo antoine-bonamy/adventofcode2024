@@ -8,13 +8,14 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.lang.Integer.parseInt;
+import static util.FileIO.readString;
 
 /**
  * <a href="https://adventofcode.com/2024/day/5">Advent of Code day five</a>
  */
 public class AdventDay5 {
 
-    private static final String INPUT = "resources/input_5";
+    private static final String INPUT_FILE = "resources/input_5";
 
     private static final List<List<Integer>> updates = getUpdates();
     private static final Map<Integer, Set<Integer>> rules = getPageRules();
@@ -42,16 +43,9 @@ public class AdventDay5 {
                 rules.getOrDefault(page1, Collections.emptySet()).contains(page2) ? 1 : -1;
     }
 
-    private static String read() {
-        try {
-            return Files.readString(Path.of(INPUT));
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading input file: " + INPUT, e);
-        }
-    }
 
     private static List<List<Integer>> getUpdates() {
-        String str = read().split("\\n\\n")[1];
+        String str = readString(INPUT_FILE).split("\\n\\n")[1];
         List<List<Integer>> updates = new ArrayList<>();
         for (String update : Arrays.stream(str.split("\\n")).toList()) {
             updates.add(Arrays.stream(update.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
@@ -61,7 +55,7 @@ public class AdventDay5 {
 
     private static Map<Integer, Set<Integer>> getPageRules() {
         Map<Integer, Set<Integer>> rules = new HashMap<>();
-        String[] lines = read().split("\\n\\n")[0].split("\r\n");
+        String[] lines = readString(INPUT_FILE).split("\\n\\n")[0].split("\r\n");
         Pattern p = Pattern.compile("(\\d+)\\|(\\d+)");
         for (String line : lines) {
             Matcher m = p.matcher(line);
